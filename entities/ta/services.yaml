@@ -398,7 +398,7 @@ entities:
         seaf.ta.services.k8s:
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            kubernetes_id:
+            id: # предлагаю всё-таки делать id для первичных ключей
               title: Kubernetes cluster ID
               type: string
             availabilityzone_id:
@@ -406,29 +406,30 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
-            is_own:
+            is_own: # тут возможна неоднозначная трактовка - куплен как услуга или на своих серверах, не в SC?
               title: Кластер куплен как услуга
               type: boolean
-            software:
+            software: # не совсем понятно, по каким критериям - версия на мастер ноде?
               title: ПО реализующее Kubernetes кластер
               type: string
-            server_id:
+            server_id: # поле ID, а внутри список, и должны быть не сервера, а ноды
               title: Список серверов реализующих кластер
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.components.server.server"
-            master_qty:
-              title: Количество мастер нод кластера
-              type: integer
-            worker_qty:
-              title: Количество воркер нод кластера
-              type: integer
+            # master_qty: - убрал, поле динамически вычисляемое
+            #  title: Количество мастер нод кластера
+            #  type: integer
+            # worker_qty: - убрал, поле динамически вычисляемое
+            #  title: Количество воркер нод кластера
+            #  type: integer
             cni:
               title: CNI плагин
               type: string
-            service_mesh:
-              title: Service Mesh
-              type: string
+            # убрал service mesh - на одном кластере может быть сколько угодно control planes наряду с проектами, не затянутыми под SM - смысл в этом поле?
+            # service_mesh:
+            #  title: Service Mesh
+            #  type: string
             cluster_autoscaler:
               title: Работа автомасштабирования воркер нод кластера
               type: boolean
@@ -446,15 +447,19 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.network.network"
+            cluster_fqdn:
+              title: FQDN для API
+              type: string
           required:
-            - kubernetes_id
-            - availabilityzone_id
-            - software
-            - master_qty
-            - worker_qty
-            - auth
-            - cni
-            - is_own
+            - id
+            # - availabilityzone_id - для собственных серверов не существует
+            # - software
+            # - master_qty
+            # - worker_qty
+            # - auth
+            - api_fqdn
+            # - cni - убрал из required всё, чего нет в моём кластере, это же модель ванильного k8s, где этого может и не быь
+            # - is_own - надо понять, в каком виде
       type: object
       patternProperties:
         "^[a-zA-Z0-9_\\.]*$":
