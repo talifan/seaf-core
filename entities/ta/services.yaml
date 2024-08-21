@@ -468,7 +468,7 @@ entities:
                     labels:
                       title: Список labels
                       type: array
-            cluster_fqdn:
+            fqdn:
               title: FQDN для API
               type: string
           required:
