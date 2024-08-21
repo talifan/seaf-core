@@ -398,7 +398,7 @@ entities:
         seaf.ta.services.k8s:
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            kubernetes_id:
+            id:
               title: Kubernetes cluster ID
               type: string
             availabilityzone_id:
