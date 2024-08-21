@@ -398,7 +398,7 @@ entities:
         seaf.ta.services.k8s:
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            id: # предлагаю всё-таки делать id для первичных ключей
+            kubernetes_id:
               title: Kubernetes cluster ID
               type: string
             availabilityzone_id:
@@ -406,30 +406,29 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
-            is_own: # тут возможна неоднозначная трактовка - куплен как услуга или на своих серверах, не в SC?
+            is_own:
               title: Кластер куплен как услуга
               type: boolean
-            software: # не совсем понятно, по каким критериям - версия на мастер ноде?
+            software:
               title: ПО реализующее Kubernetes кластер
               type: string
-            server_id: # поле ID, а внутри список, и должны быть не сервера, а ноды
+            server_id:
               title: Список серверов реализующих кластер
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.components.server.server"
-            # master_qty: - убрал, поле динамически вычисляемое
-            #  title: Количество мастер нод кластера
-            #  type: integer
-            # worker_qty: - убрал, поле динамически вычисляемое
-            #  title: Количество воркер нод кластера
-            #  type: integer
+            master_qty:
+              title: Количество мастер нод кластера
+              type: integer
+            worker_qty:
+              title: Количество воркер нод кластера
+              type: integer
             cni:
               title: CNI плагин
               type: string
-            # убрал service mesh - на одном кластере может быть сколько угодно control planes наряду с проектами, не затянутыми под SM - смысл в этом поле?
-            # service_mesh:
-            #  title: Service Mesh
-            #  type: string
+            service_mesh:
+              title: Service Mesh
+              type: string
             cluster_autoscaler:
               title: Работа автомасштабирования воркер нод кластера
               type: boolean
@@ -447,6 +446,28 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.network.network"
+            nodes:
+              title: Ноды кластера Kubernetes
+              type: array
+              minItems: 1
+              items:
+                .*:
+                  type: object
+                  properties:
+                    version:
+                      title: Версия Kubernetes
+                      type: string
+                    control-plane:
+                      title: Master или Worker нода
+                      type: string
+                    server_id:
+                      title: Список серверов реализующих кластер
+                      type: array
+                      items:
+                        $ref: "#/$rels/seaf.ta.components.server.server"
+                    labels:
+                      title: Список labels
+                      type: array
             cluster_fqdn:
               title: FQDN для API
               type: string
@@ -478,7 +499,7 @@ entities:
           oneOf:
             - type: object
               properties:
-                network_id:
+                id:
                   title: Network ID
                   type: string
                 type:
@@ -492,7 +513,7 @@ entities:
                 office_id:
                   title: Офис
                   $ref: "#/$rels/seaf.ta.services.office.office"
-                availabilityzone_id:
+                az:
                   title: В какие зоны доступности входит
                   type: array
                   items:
@@ -518,7 +539,7 @@ entities:
                   items:
                     $ref: "#/$rels/seaf.ta.components.network.network"
               required:
-                - network_id
+                - id
                 - wan_ip
                 - type
                 - provider
@@ -527,7 +548,7 @@ entities:
               additionalProperties: false
             - type: object
               properties:
-                network_id:
+                id:
                   title: Network ID
                   type: string
                 type:
@@ -541,7 +562,7 @@ entities:
                 office_id:
                   title: Офис
                   $ref: "#/$rels/seaf.ta.services.office.office"
-                availabilityzone_id:
+                az:
                   title: В какие зоны доступности входит
                   type: array
                   items:
@@ -569,7 +590,7 @@ entities:
                   items:
                     $ref: "#/$rels/seaf.ta.components.network.network"
               required:
-                - network_id
+                - id
                 - type
                 - lan_type
                 - ipnetwork
@@ -577,7 +598,7 @@ entities:
               additionalProperties: false
       type: object
       patternProperties:
-        "^[a-zA-Z0-9_\\.]*$":
+        "^[a-zA-Z0-9_-]*(\\.[a-zA-Z0-9_-]*)*$":
           $ref: "#/$defs/seaf.ta.services.network"
 
   seaf.ta.services.network_links:
