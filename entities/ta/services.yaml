@@ -478,7 +478,7 @@ entities:
             # - master_qty
             # - worker_qty
             # - auth
-            - cluster_fqdn
+            - fqdn
             # - cni - убрал из required всё, чего нет в моём кластере, это же модель ванильного k8s, где этого может и не быь
             # - is_own - надо понять, в каком виде
       type: object
