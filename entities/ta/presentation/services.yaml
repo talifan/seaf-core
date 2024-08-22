@@ -411,7 +411,6 @@ entities:
       table:
         type: table
         headers:
-
           - value: cluster_fqdn
             text: Имя кластера Kubernetes
             sortable: true
@@ -442,7 +441,7 @@ entities:
                 "title": title,
                 "description": description,
                 "availabilityzone_id": availabilityzone_id,
-                "cluster_fqdn": cluster_fqdn,
+                "cluster_fqdn": fqdn,
                 "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone_id","val":availabilityzone_id}),
                 "link": '/entities/seaf.ta.services.k8s/list?ta-component-id=' & $COMPONENT_ID
               }
