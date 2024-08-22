@@ -401,15 +401,15 @@ entities:
             id:
               title: Kubernetes cluster ID
               type: string
-            availabilityzone_id:
+            az_id: # переименовал из длинного по аналогии с другими реверсами
               title: В какие зоны доступности входит
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
-            is_own:
+            is_own: #todo уточнить критерии и формулировку, что такое собственный
               title: Кластер куплен как услуга
               type: boolean
-            software:
+            software: #todo теоретически, на разных нодах может быть разная версия kubelet, и поле является вычисляемым
               title: ПО реализующее Kubernetes кластер
               type: string
             server_id:
@@ -417,16 +417,16 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.components.server.server"
-            master_qty:
+            master_qty: #todo поле является вычисляемым, нужно ли его прибивать гвоздями
               title: Количество мастер нод кластера
               type: integer
-            worker_qty:
+            worker_qty: #todo поле является вычисляемым, нужно ли его прибивать гвоздями
               title: Количество воркер нод кластера
               type: integer
             cni:
               title: CNI плагин
               type: string
-            service_mesh:
+            service_mesh: #todo в кластере может быть N control planes, предлагаю поле убрать
               title: Service Mesh
               type: string
             cluster_autoscaler:
