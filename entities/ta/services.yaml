@@ -398,18 +398,18 @@ entities:
         seaf.ta.services.k8s:
           $ref: "#/$defs/seaf.ta.services.base.entity"
           properties:
-            kubernetes_id:
+            id:
               title: Kubernetes cluster ID
               type: string
-            availabilityzone_id:
+            az_id: # переименовал из длинного по аналогии с другими реверсами
               title: В какие зоны доступности входит
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
-            is_own:
+            is_own: #todo уточнить критерии и формулировку, что такое собственный
               title: Кластер куплен как услуга
               type: boolean
-            software:
+            software: #todo теоретически, на разных нодах может быть разная версия kubelet, и поле является вычисляемым
               title: ПО реализующее Kubernetes кластер
               type: string
             server_id:
@@ -417,16 +417,16 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.components.server.server"
-            master_qty:
+            master_qty: #todo поле является вычисляемым, нужно ли его прибивать гвоздями
               title: Количество мастер нод кластера
               type: integer
-            worker_qty:
+            worker_qty: #todo поле является вычисляемым, нужно ли его прибивать гвоздями
               title: Количество воркер нод кластера
               type: integer
             cni:
               title: CNI плагин
               type: string
-            service_mesh:
+            service_mesh: #todo в кластере может быть N control planes, предлагаю поле убрать
               title: Service Mesh
               type: string
             cluster_autoscaler:
@@ -446,37 +446,19 @@ entities:
               type: array
               items:
                 $ref: "#/$rels/seaf.ta.services.network.network"
-            nodes:
-              title: Ноды кластера Kubernetes
-              type: array
-              minItems: 1
-              items:
-                .*:
-                  type: object
-                  properties:
-                    version:
-                      title: Версия Kubernetes
-                      type: string
-                    control-plane:
-                      title: Master или Worker нода
-                      type: string
-                    server_id:
-                      title: Список серверов реализующих кластер
-                      type: array
-                      items:
-                        $ref: "#/$rels/seaf.ta.components.server.server"
-                    labels:
-                      title: Список labels
-                      type: array
+            fqdn:
+              title: FQDN для API
+              type: string
           required:
-            - kubernetes_id
-            - availabilityzone_id
-            - software
-            - master_qty
-            - worker_qty
-            - auth
-            - cni
-            - is_own
+            - id
+            # - availabilityzone_id - для собственных серверов не существует
+            # - software
+            # - master_qty
+            # - worker_qty
+            # - auth
+            - fqdn
+            # - cni - убрал из required всё, чего нет в моём кластере, это же модель ванильного k8s, где этого может и не быь
+            # - is_own - надо понять, в каком виде
       type: object
       patternProperties:
         "^[a-zA-Z0-9_\\.]*$":
