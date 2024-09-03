@@ -401,11 +401,11 @@ entities:
             id:
               title: Kubernetes cluster ID
               type: string
-            az_id: # переименовал из длинного по аналогии с другими реверсами
-              title: В какие зоны доступности входит
-              type: array
-              items:
-                $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
+            #az_id: # перенесено в k8s_node, т.к. в рамках кластера могут быть ноды в разных зонах доступности
+            #  title: В какие зоны доступности входит
+            #  type: array
+            #  items:
+            #    $ref: "#/$rels/seaf.ta.services.dc_az.dc_az"
             is_own: #todo уточнить критерии и формулировку, что такое собственный
               title: Кластер куплен как услуга
               type: boolean
