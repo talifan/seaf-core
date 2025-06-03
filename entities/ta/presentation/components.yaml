@@ -29,14 +29,14 @@ entities:
             sortable: true
             align: left
             width: 20%
-            link: dc_link
+            link: loc_link
 
           - value: virtualization
             text: Платформа виртуализации
             sortable: true
             align: left
             width: 20%
-            link: dc_link
+            link: virt_link
 
         source: >
           (
@@ -52,7 +52,8 @@ entities:
                 "virtualization": virtualization,
                 "fqdn": fqdn,
                 "link": '/entities/seaf.ta.components.server/list?ta-component-id=' & $COMPONENT_ID,
-                "dc_link" :  $eval($get_link,{"hr":$refs."dc","val":dc})
+                "loc_link" :  $eval($get_link,{"hr":$refs."location","val":location}),
+                "virt_link" :  $eval($get_link,{"hr":$refs."virtualization","val":virtualization})
               }
             )]^(title)]
           )
@@ -102,7 +103,7 @@ entities:
             sortable: true
             align: left
             width: 20%
-
+            link: loc_link
 
         source: >
           (
@@ -116,7 +117,7 @@ entities:
                 "vendor": vendor,
                 "location": location,
                 "link": '/entities/seaf.ta.components.hw_storage/list?ta-component-id=' & $COMPONENT_ID,
-                "dc_link" :  $eval($get_link,{"hr":$refs."dc_id","val":dc_id})
+                "loc_link" :  $eval($get_link,{"hr":$refs."location","val":location})
               }
             )]^(title)]
           )
@@ -167,7 +168,7 @@ entities:
             sortable: true
             align: left
             width: 20%
-
+            link: loc_link
 
         source: >
           (
@@ -182,7 +183,7 @@ entities:
                 "ip": address,
                 "model": model,
                 "link": '/entities/seaf.ta.components.network/list?ta-component-id=' & $COMPONENT_ID,
-                "dc_link" :  $eval($get_link,{"hr":$refs."dc_id","val":dc_id})
+                "loc_link" :  $eval($get_link,{"hr":$refs."location","val":location})
               }
             )]^(title)]
           )
@@ -273,8 +274,8 @@ entities:
             align: left
             width: 20%
 
-          - value: availabilityzone_id
-            text: Availability Zone ID
+          - value: availabilityzone
+            text: Availability Zone
             sortable: true
             align: left
             width: 20%
@@ -297,9 +298,9 @@ entities:
                 "title": title,
                 "description": description,
                 "kubernetes_id": kubernetes_id,
-                "availabilityzone_id": availabilityzone_id,
+                "availabilityzone": availabilityzone,
                 "link": '/entities/seaf.ta.components.k8s_deployment/list?ta-component-id=' & $COMPONENT_ID,
-                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone_id","val":availabilityzone_id}),
+                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone","val":availabilityzone}),
                 "k_link" :  $eval($get_link,{"hr":$refs."kubernetes_id","val":kubernetes_id})
               }
             )]^(title)]
@@ -339,8 +340,8 @@ entities:
             align: left
             width: 20%
 
-          - value: availabilityzone_id
-            text: Availability Zone ID
+          - value: availabilityzone
+            text: Availability Zone
             sortable: true
             align: left
             width: 20%
@@ -363,9 +364,9 @@ entities:
                 "title": title,
                 "description": description,
                 "kubernetes_id": kubernetes_id,
-                "availabilityzone_id": availabilityzone_id,
+                "availabilityzone": availabilityzone,
                 "link": '/entities/seaf.ta.components.k8s_statefulset/list?ta-component-id=' & $COMPONENT_ID,
-                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone_id","val":availabilityzone_id}),
+                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone","val":availabilityzone}),
                 "k_link" :  $eval($get_link,{"hr":$refs."kubernetes_id","val":kubernetes_id})
               }
             )]^(title)]
@@ -536,3 +537,4 @@ entities:
         template: templates/list.md
         source: >
           ( {'title': $self.title, 'id':$params."ta-component-id", "base-name":$split($self."$base", "/")[2]};)
+
