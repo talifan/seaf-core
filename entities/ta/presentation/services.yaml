@@ -147,7 +147,7 @@ entities:
                 "vendor": vendor,
                 "availabilityzone": availabilityzone,
                 "link": '/entities/seaf.ta.services.dc/list?ta-component-id=' & $COMPONENT_ID,
-                "avail_link" : "/entities/"& $refs."availabilityzone_id" &"/list?ta-component-id=" & availabilityzone_id
+                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone","val":availabilityzone})
               }
             )]^(title)]
           )
@@ -516,7 +516,7 @@ entities:
                 "title": title,
                 "description": description,
                 "availabilityzone": availabilityzone,
-                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone_id","val":availabilityzone_id}),
+                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone","val":availabilityzone}),
                 "link": '/entities/seaf.ta.services.k8s/list?ta-component-id=' & $COMPONENT_ID
               }
             )]^(title)]
@@ -564,7 +564,7 @@ entities:
             sortable: true
             align: left
             width: 20%
-
+            link: loc_link
           - value: ipnetwork
             text: Адрес сети
             sortable: true
@@ -584,7 +584,7 @@ entities:
             sortable: true
             align: left
             width: 20%
-            link: avail_link
+            link: seg_link
 
         source: >
           (
@@ -603,7 +603,8 @@ entities:
                 "link": '/entities/seaf.ta.services.network/list?ta-component-id=' & $COMPONENT_ID,
                 "dc_link" :  $eval($get_link,{"hr":$refs."dc_id","val":dc_id}),
                 "o_link" :  $eval($get_link,{"hr":$refs."office_id","val":office_id}),
-                "avail_link" :  $eval($get_link,{"hr":$refs."availabilityzone_id","val":availabilityzone_id})
+                "loc_link" :  $eval($get_link,{"hr":$refs."location","val":location}),
+                "seg_link" :  $eval($get_link,{"hr":$refs."segment","val":segment})
               }
             )]^(title)]
           )
@@ -963,6 +964,7 @@ entities:
             sortable: true
             align: left
             width: 20%
+            link: env_link
         source: >
           (
             $refs := $eval($.functions."seaf.ta".get_refs, [{"c":"seaf.ta.services.stand"}, $]); 
@@ -972,7 +974,8 @@ entities:
              $.*.{
                 "title": title,
                 "description": description,
-                "env": env
+                "env": env,
+                "env_link" :  $eval($get_link,{"hr":$refs."env","val":env})
               }
             )]^(title)]
           )
@@ -991,3 +994,4 @@ entities:
         template: templates/list.md
         source: >
           ({'title': $self.title, 'id':$params."ta-component-id", "base-name":$split($self."$base", "/")[2]};)
+
